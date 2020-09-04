@@ -35,8 +35,6 @@ public class MinimizedPanel extends JPanel
 		if(height < 100)
 			height = 100;
 		
-		System.out.println(width + " "  +height);
-		
 		setPreferredSize(new Dimension(width, height));
 		
 		setOpaque(false);

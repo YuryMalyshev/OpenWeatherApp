@@ -28,8 +28,19 @@ public class WeatherUpdateThread extends TimerTask
 	{
 		updateWeather();
 	}
+	
+	public void updateSoon()
+	{
+		Thread worker = new Thread() {
+			public void run()
+			{
+				updateWeather();
+			}
+		};
+		worker.start();
+	}
 
-	public void updateWeather()
+	private void updateWeather()
 	{
 		try
 		{
@@ -48,7 +59,7 @@ public class WeatherUpdateThread extends TimerTask
 			{
 				e.printStackTrace();
 			}
-			
+			frame.updateHourlyWeather(weather.getHourly());
 			frame.updateDailyWeather(weather.getDaily());
 		}
 		catch (RuntimeException e)

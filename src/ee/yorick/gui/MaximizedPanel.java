@@ -34,9 +34,8 @@ public class MaximizedPanel extends JPanel
 		GraphDrawer.setDesiredSize(width, height-swHeight);
 		PApplet.main(GraphDrawer.class);
 		Component processing = GraphDrawer.getInstance().getPanel();
-		GraphDrawer.getInstance().disposeOfFrame();
-		
 		graphPanel.add(processing, BorderLayout.CENTER);
+		GraphDrawer.getInstance().disposeOfFrame();
 		add(graphPanel);
 		
 		
@@ -70,7 +69,12 @@ public class MaximizedPanel extends JPanel
 	
 	public void updateHourlyWeather(ArrayList<WeatherHour> hours)
 	{
-		
+		if(update)
+		{
+			GraphDrawer.getInstance().updateAxis(hours);
+			GraphDrawer.getInstance().updateValues(hours);
+			GraphDrawer.getInstance().redraw();
+		}
 	}
 	
 	public void enableUpdates(boolean enable)

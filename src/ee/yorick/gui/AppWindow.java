@@ -89,7 +89,7 @@ public class AppWindow extends JFrame
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				wut.updateWeather();
+				wut.updateSoon();
 			}
 		});
 		btnUpdate.setBackground(Color.BLUE);
@@ -104,7 +104,7 @@ public class AppWindow extends JFrame
 				if(ww.showDialog() == WelcomeWindow.OK)
 				{
 					wut.setAPIkey(ww.getAPIkey());
-					wut.updateWeather();
+					wut.updateSoon();
 				}
 			}
 		});
@@ -170,6 +170,7 @@ public class AppWindow extends JFrame
 					weatherPanel.add(maxp);
 					maxp.enableUpdates(true);
 					btnExtend.setText("\u2196");
+					wut.updateSoon();
 					pack();
 				}
 				else
@@ -179,6 +180,7 @@ public class AppWindow extends JFrame
 					weatherPanel.add(minp);
 					minp.enableUpdates(true);
 					btnExtend.setText("\u2198");
+					wut.updateSoon();
 					pack();
 				}
 				isMin = !isMin;
@@ -222,7 +224,7 @@ public class AppWindow extends JFrame
 	
 	public void updateHourlyWeather(ArrayList<WeatherHour> hours)
 	{
-		
+		maxp.updateHourlyWeather(hours);
 	}
 
 }
