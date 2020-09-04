@@ -133,7 +133,7 @@ public class GraphDrawer extends PApplet
 		float t = minT;
 		for(int i = (int)(D-co); i > U; i -= tempInterval)
 		{
-			axisValues.text(t + "*C", 0, i+textSize/2);
+			axisValues.text(t + "°C", 0, i+textSize/2);
 			t += tInt;
 		}
 		axisValues.endDraw();
