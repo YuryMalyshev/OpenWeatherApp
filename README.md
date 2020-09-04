@@ -11,3 +11,5 @@ The screenshots of the app can be found [in screenshots folder](https://github.c
 The latest runnable version is found in [releases](https://github.com/YuryMalyshev/OpenWeatherApp/releases/latest).
 
 To run the app correctly, it is needed to get an [API key from Open Weather](https://home.openweathermap.org/api_keys).
+
+The project is built in Eclipse IDE.
