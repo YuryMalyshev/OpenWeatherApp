@@ -1,41 +1,35 @@
 package ee.yorick.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
+import java.awt.Image;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
+
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URL;
+import java.util.Timer;
 import java.awt.event.ActionEvent;
 
 public class AppWindow extends JFrame
 {
 	private static final long serialVersionUID = 71707730991574964L;
-	private static char degC = '\u2103';
+	public static final char degC = '\u2103';
 	
 	private JPanel contentPane;
-	private JLabel lblTemp;
-	private JLabel lblTime;
-	private JLabel lblIcon;
+	private MinimizedPanel minp;
+	private MaximizedPanel maxp;
 	private WeatherUpdateThread wut;
+	private JPanel weatherPanel;
+	private JPanel extendPanel;
 	
 
 	public static void main(String[] args)
@@ -56,7 +50,10 @@ public class AppWindow extends JFrame
 			}
 		});
 	}
-
+	
+	boolean isMin = true;
+	private JLabel lblTime;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -64,43 +61,21 @@ public class AppWindow extends JFrame
 	{
 		this.setTitle("Weather App");
 		this.setResizable(false);
-		wut = new WeatherUpdateThread("");
+		wut = new WeatherUpdateThread("", this);
 		WelcomeWindow ww = new WelcomeWindow();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		int widht = d.height/3;
-		if(widht < 290)
-			widht = 290;
 		
-		int height = d.height/5;
-		if(height < 150)
-			height = 150;
-		setBounds(100, 100, widht, height);
+		setBounds(100, 100, 100, 100);
 		contentPane = new JPanel();
+		contentPane.setOpaque(true);
 		contentPane.setBackground(new Color(0, 191, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
-		
-		JPanel weatherPanel = new JPanel();
-		weatherPanel.setOpaque(false);
-		contentPane.add(weatherPanel, BorderLayout.CENTER);
-		weatherPanel.setLayout(new GridLayout(0, 2, 0, 0));
-		
-		lblTemp = new JLabel("n/a"+degC);
-		lblTemp.setFont(new Font("Tahoma", Font.PLAIN, 44));
-		lblTemp.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTemp.setAlignmentX(Component.CENTER_ALIGNMENT);
-		weatherPanel.add(lblTemp);
-		
-		lblIcon = new JLabel("");
-		lblIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		weatherPanel.add(lblIcon);
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel timePanel = new JPanel();
+		getContentPane().add(timePanel, BorderLayout.NORTH);
 		timePanel.setOpaque(false);
-		contentPane.add(timePanel, BorderLayout.NORTH);
 		timePanel.setLayout(new BorderLayout(0, 0));
 		
 		lblTime = new JLabel("n/a");
@@ -116,7 +91,7 @@ public class AppWindow extends JFrame
 				wut.updateWeather();
 			}
 		});
-		btnUpdate.setBackground(new Color(0, 0, 255));
+		btnUpdate.setBackground(Color.BLUE);
 		btnUpdate.setFocusable(false);
 		timePanel.add(btnUpdate, BorderLayout.EAST);
 		
@@ -132,93 +107,107 @@ public class AppWindow extends JFrame
 				}
 			}
 		});
-		btnInfo.setBackground(new Color(0, 0, 255));
+		btnInfo.setBackground(Color.BLUE);
 		btnInfo.setFocusable(false);
 		timePanel.add(btnInfo, BorderLayout.WEST);
-		setVisible(true);
 		
+		
+		
+		weatherPanel = new JPanel();
+		weatherPanel.setOpaque(false);
+		contentPane.add(weatherPanel);
+		weatherPanel.setLayout(new BorderLayout(0, 0));
+		
+		minp = new MinimizedPanel(wut);
+		weatherPanel.add(minp);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		maxp = new MaximizedPanel();
+		//weatherPanel.add(maxp, "max");
+
+		extendPanel = new JPanel();
+		extendPanel.setOpaque(false);
+		FlowLayout fl_extendPanel = (FlowLayout) extendPanel.getLayout();
+		fl_extendPanel.setAlignment(FlowLayout.RIGHT);
+		fl_extendPanel.setVgap(0);
+		fl_extendPanel.setHgap(0);
+		contentPane.add(extendPanel, BorderLayout.SOUTH);
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		JButton btnExtend = new JButton("\u2198");
+		btnExtend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(isMin)
+				{
+					weatherPanel.remove(minp);
+					weatherPanel.add(maxp);
+					btnExtend.setText("\u2196");
+					pack();
+				}
+				else
+				{
+					weatherPanel.remove(maxp);
+					weatherPanel.add(minp);
+					btnExtend.setText("\u2198");
+					pack();
+				}
+				isMin = !isMin;
+			}
+		});
+		extendPanel.add(btnExtend);
+		btnExtend.setFocusable(false);
+		btnExtend.setForeground(Color.GREEN);
+		btnExtend.setBackground(Color.BLUE);
+		setVisible(true);
+		pack();
 		
 		if(ww.showFirstTime() == WelcomeWindow.OK)
 		{
 			wut.setAPIkey(ww.getAPIkey());
 		}
-		wut.start();
+		Timer timer = new Timer(); 
+      timer.schedule(wut, 0, 60*1000); 
 	}
-	
-	private class WeatherUpdateThread extends Thread
+
+	public void updateTemp(double t)
 	{
-		private Weather weather;
-		
-		public WeatherUpdateThread(String APIkey)
-		{
-			weather = new Weather(APIkey);
-			weather.updateLocation();
-		}
-		
-		public void setAPIkey(String APIkey)
-		{
-			this.weather.setAPIkey(APIkey);
-		}
-		
-		public void run()
-		{
-			while(true)
-			{
-				updateWeather();
-				LocalTime nextMinute = LocalTime.of(LocalTime.now().getHour(), LocalTime.now().getMinute()+1);
-				long delay = LocalTime.now().until(nextMinute, ChronoUnit.MILLIS);
-				try{Thread.sleep(delay);}catch (InterruptedException e)	{e.printStackTrace(); }
-			}
-		}
-		
-		public void updateWeather()
-		{
-			try
-			{
-				weather.retrieveLatest();
-				WeatherHour current = weather.getCurrent();
-				double t = current.getTempC();
-				if(t > 0)
-				{
-					lblTemp.setText("+"+t);
-				}
-				else if(t < 0)
-				{
-					lblTemp.setText("-"+t);
-				}
-				else
-				{
-					lblTemp.setText(""+t);
-				}
-				
-				lblTime.setText(current.getTime());
-				
-				try
-				{
-					URL url = new URL("http://openweathermap.org/img/wn/$icon$@2x.png".replace("$icon$", current.getIcon()));
-					Image image = ImageIO.read(url);
-					lblIcon.setIcon(new ImageIcon(image));
-					AppWindow.this.setIconImage(image);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			catch(RuntimeException e)
-			{
-				if(e.getMessage().contains("Invalid API key"))
-				{
-					lblTime.setText("Invalid API key");
-				}
-				else
-				{
-					System.err.println(e.getMessage());
-					lblTime.setText(e.getMessage());
-				}
-				lblTemp.setText("n/a"+degC);
-			}
-		}
+		minp.updateTemp(t);
+	}
+
+	public void updateTime(String time)
+	{
+		lblTime.setText(time);
+	}
+
+	public void updateWeatherIcon(Image image)
+	{
+		minp.updateWeatherIcon(image);
+		AppWindow.this.setIconImage(image);
 	}
 
 }
