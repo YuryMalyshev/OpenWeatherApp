@@ -16,6 +16,7 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.awt.event.ActionEvent;
 
@@ -165,14 +166,18 @@ public class AppWindow extends JFrame
 				if(isMin)
 				{
 					weatherPanel.remove(minp);
+					minp.enableUpdates(false);
 					weatherPanel.add(maxp);
+					maxp.enableUpdates(true);
 					btnExtend.setText("\u2196");
 					pack();
 				}
 				else
 				{
 					weatherPanel.remove(maxp);
+					maxp.enableUpdates(false);
 					weatherPanel.add(minp);
+					minp.enableUpdates(true);
 					btnExtend.setText("\u2198");
 					pack();
 				}
@@ -193,7 +198,7 @@ public class AppWindow extends JFrame
 		Timer timer = new Timer(); 
       timer.schedule(wut, 0, 60*1000); 
 	}
-
+	
 	public void updateTemp(double t)
 	{
 		minp.updateTemp(t);
@@ -208,6 +213,16 @@ public class AppWindow extends JFrame
 	{
 		minp.updateWeatherIcon(image);
 		AppWindow.this.setIconImage(image);
+	}
+	
+	public void updateDailyWeather(ArrayList<WeatherDay> days)
+	{
+		maxp.updateDailyWeather(days);
+	}
+	
+	public void updateHourlyWeather(ArrayList<WeatherHour> hours)
+	{
+		
 	}
 
 }

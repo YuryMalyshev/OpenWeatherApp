@@ -48,6 +48,8 @@ public class WeatherUpdateThread extends TimerTask
 			{
 				e.printStackTrace();
 			}
+			
+			frame.updateDailyWeather(weather.getDaily());
 		}
 		catch (RuntimeException e)
 		{

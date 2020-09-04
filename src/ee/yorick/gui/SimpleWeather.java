@@ -3,10 +3,13 @@ package ee.yorick.gui;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
@@ -20,11 +23,12 @@ public class SimpleWeather extends JPanel
 	private JLabel lblIcon;
 	private JLabel lblMinTemp;
 	private JLabel lblMaxTemp;
+	private JLabel lblDay;
 	
-	public SimpleWeather(int width)
+	public SimpleWeather(int width, int height)
 	{
 		setOpaque(false);
-		setPreferredSize(new Dimension(width, width+(int)(width/3f)));
+		setPreferredSize(new Dimension(width, height));
 		setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		setLayout(new BorderLayout(0, 0));
 		
@@ -36,7 +40,7 @@ public class SimpleWeather extends JPanel
 		tPanel.setOpaque(false);
 		tPanel.setBorder(null);
 		add(tPanel, BorderLayout.SOUTH);
-		tPanel.setLayout(new GridLayout(2, 0, 0, 0));
+		tPanel.setLayout(new GridLayout(3, 0, 0, 0));
 		
 		lblMinTemp = new JLabel("Min: # " + AppWindow.degC);
 		lblMinTemp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -45,18 +49,36 @@ public class SimpleWeather extends JPanel
 		lblMaxTemp = new JLabel("Max: #" + AppWindow.degC);
 		lblMaxTemp.setHorizontalAlignment(SwingConstants.CENTER);
 		tPanel.add(lblMaxTemp);
+		
+		lblDay = new JLabel("");
+		lblDay.setHorizontalAlignment(SwingConstants.CENTER);
+		tPanel.add(lblDay);
 
 	}
 	
-	public void updateWeatherIcon(Image image)
+	public void updateWeatherIcon(String icon)
 	{
-		lblIcon.setIcon(new ImageIcon(image));
+		try
+		{
+			URL url = new URL("http://openweathermap.org/img/wn/$icon$@2x.png".replace("$icon$", icon));
+			Image image = ImageIO.read(url);
+			lblIcon.setIcon(new ImageIcon(image));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	public void updateTemperature()
+	public void updateTemperature(double min, double max)
 	{
-		lblMinTemp.setText("Min: # " + AppWindow.degC);
-		lblMaxTemp.setText("Max: #" + AppWindow.degC);
+		lblMinTemp.setText("Min: "+min + AppWindow.degC);
+		lblMaxTemp.setText("Max: "+max + AppWindow.degC);
+	}
+	
+	public void updateDate(String date)
+	{
+		lblDay.setText(date);
 	}
 
 }

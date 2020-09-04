@@ -2,25 +2,43 @@ package ee.yorick.gui;
 
 import javax.swing.JPanel;
 
+import processing.core.PApplet;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 public class MaximizedPanel extends JPanel
 {
 	private static final long serialVersionUID = -3704320889049075447L;
 	private ArrayList<SimpleWeather> days = new ArrayList<SimpleWeather>();
+	private boolean update = false;
 	
 	public MaximizedPanel()
 	{
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int) (d.height/1.5f);
-		setPreferredSize(new Dimension(width, d.height/3));
+		int height = d.height/3;
+		int swWidth = width/7;
+		int swHeight = swWidth+swWidth/3;
+		setPreferredSize(new Dimension(width, height));
 		setLayout(new BorderLayout(0, 0));
+		
 		JPanel graphPanel = new JPanel();
+		graphPanel.setBorder(null);
+		graphPanel.setLayout(new BorderLayout(0, 0));
+		
+		GraphDrawer.setDesiredSize(width, height-swHeight);
+		PApplet.main(GraphDrawer.class);
+		Component processing = GraphDrawer.getInstance().getPanel();
+		GraphDrawer.getInstance().disposeOfFrame();
+		
+		graphPanel.add(processing, BorderLayout.CENTER);
 		add(graphPanel);
+		
 		
 		setOpaque(false);
 		
@@ -30,10 +48,33 @@ public class MaximizedPanel extends JPanel
 		daysPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		for(int i = 0; i < 7; i++)
 		{
-			SimpleWeather sw = new SimpleWeather((int) (width/7f));
+			SimpleWeather sw = new SimpleWeather(swWidth, swHeight);
 			daysPanel.add(sw);
 			days.add(sw);
 		}
+		
 	}
-
+	
+	public void updateDailyWeather(ArrayList<WeatherDay> days)
+	{
+		if(update)
+		{
+			for(int i = 1; i < days.size(); i++)
+			{
+				this.days.get(i-1).updateTemperature(days.get(i).getMin(), days.get(i).getMax());
+				this.days.get(i-1).updateWeatherIcon(days.get(i).getIcon());
+				this.days.get(i-1).updateDate(days.get(i).getDate());
+			}
+		}
+	}
+	
+	public void updateHourlyWeather(ArrayList<WeatherHour> hours)
+	{
+		
+	}
+	
+	public void enableUpdates(boolean enable)
+	{
+		update = enable;
+	}
 }

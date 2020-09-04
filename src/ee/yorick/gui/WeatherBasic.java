@@ -25,7 +25,12 @@ public class WeatherBasic
 		return time.format(DateTimeFormatter.ofPattern("HH:mm"));
 	}
 	
-	public CharSequence getIcon()
+	public String getDate()
+	{
+		return time.format(DateTimeFormatter.ofPattern("dd/MM"));
+	}
+	
+	public String getIcon()
 	{
 		return icon;
 	}

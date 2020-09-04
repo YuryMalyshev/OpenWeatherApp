@@ -23,6 +23,16 @@ public class WeatherDay extends WeatherBasic
 		this.tempMorn = tempMorn;
 	}
 	
+	public double getMax()
+	{
+		return convertToCelsius(Math.max(Math.max(Math.max(tempDay, tempNight), tempEve), tempMorn));
+	}
+	
+	public double getMin()
+	{
+		return convertToCelsius(Math.min(Math.min(Math.min(tempDay, tempNight), tempEve), tempMorn));
+	}
+	
 	@Override
 	public String toString()
 	{

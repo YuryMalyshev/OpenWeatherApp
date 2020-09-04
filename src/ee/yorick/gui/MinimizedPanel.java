@@ -22,6 +22,8 @@ public class MinimizedPanel extends JPanel
 	private JLabel lblTemp;
 	private JLabel lblIcon;
 	
+	private boolean update = true;
+	
 	public MinimizedPanel(WeatherUpdateThread wut)
 	{
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -65,25 +67,36 @@ public class MinimizedPanel extends JPanel
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 	}
 	
+	public void enableUpdates(boolean enable)
+	{
+		update = enable;
+	}
+	
 	public void updateTemp(double t)
 	{
-		if (t > 0)
+		if(update)
 		{
-			lblTemp.setText("+" + t);
-		}
-		else if (t < 0)
-		{
-			lblTemp.setText("-" + t);
-		}
-		else
-		{
-			lblTemp.setText("" + t);
+			if (t > 0)
+			{
+				lblTemp.setText("+" + t);
+			}
+			else if (t < 0)
+			{
+				lblTemp.setText("-" + t);
+			}
+			else
+			{
+				lblTemp.setText("" + t);
+			}
 		}
 	}
 
 	public void updateWeatherIcon(Image image)
 	{
-		lblIcon.setIcon(new ImageIcon(image));
+		if(update)
+		{
+			lblIcon.setIcon(new ImageIcon(image));
+		}
 	}
 
 }

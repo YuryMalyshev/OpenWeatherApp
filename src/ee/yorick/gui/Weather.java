@@ -148,4 +148,14 @@ public class Weather
 	{
 		return current;
 	}
+	
+	public ArrayList<WeatherHour> getHourly()
+	{
+		return hours;
+	}
+	
+	public ArrayList<WeatherDay> getDaily()
+	{
+		return days;
+	}
 }
