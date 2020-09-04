@@ -1,4 +1,4 @@
-package ee.yorick.gui;
+package ee.yorick.logic;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+
+import ee.yorick.AppWindow;
 
 public class WeatherUpdateThread extends TimerTask
 {

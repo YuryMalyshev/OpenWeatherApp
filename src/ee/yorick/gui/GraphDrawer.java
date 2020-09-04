@@ -1,58 +1,24 @@
 package ee.yorick.gui;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import ee.yorick.logic.WeatherHour;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class GraphDrawer extends PApplet
 {
-	public static void main(String[] a)
-	{
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) (d.height/1.5f);
-		int height = d.height/3;
-		int swWidth = width/7;
-		int swHeight = swWidth+swWidth/3;
-		
-		GraphDrawer.setDesiredSize(width, height-swHeight);
-		PApplet.main(GraphDrawer.class);
-		Thread t =new Thread() {
-			public void run()
-			{
-				while(true)
-				{
-					self.redraw();
-					try
-					{
-						Thread.sleep(30);
-					}
-					catch (InterruptedException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		t.start();
-	}
-	
-	
-	
-	
-	
-	
-	
-	private static GraphDrawer self;
+	private static GraphDrawer self = null;
 	
 	public static GraphDrawer getInstance()
 	{
+		while(self == null)
+		{
+			try {Thread.sleep(1); } catch (InterruptedException e) {}
+		}
 		return GraphDrawer.self;
 	}
 	
@@ -66,7 +32,6 @@ public class GraphDrawer extends PApplet
 	
 	public void settings()
 	{
-		self = this;
 		size(GraphDrawer.width, GraphDrawer.height);
 	}
 	
@@ -98,9 +63,14 @@ public class GraphDrawer extends PApplet
 		values = this.createGraphics((int)(R-L-2*co+2), (int)(D-U-2*co+2));
 	}
 	
+	
 	public void draw()
 	{
-		background(0);
+		if(self == null)
+		{
+			self = this;
+		}
+		background(0, 191, 255);
 		image(axis, 0, 0);
 		image(axisValues, 0, 0);
 		image(values, L+co, U+co);
@@ -111,12 +81,10 @@ public class GraphDrawer extends PApplet
 	public void setupAxis()
 	{
 		axis.beginDraw();
-		axis.stroke(255);
+		axis.stroke(0);
 		axis.strokeWeight(3);
 		axis.line(L, D, R, D); //hor
 		axis.line(L, U, L, D); //ver
-		
-		axis.stroke(255);
 		axis.strokeWeight(1);
 		for(int i = (int)(L+co); i < R; i += timeInterval*4)
 		{
@@ -132,8 +100,9 @@ public class GraphDrawer extends PApplet
 	public void updateAxis(ArrayList<WeatherHour> hours)
 	{
 		axisValues.beginDraw();
+		axisValues.clear();
 		axisValues.textSize(textSize);
-		axisValues.fill(255);
+		axisValues.fill(0);
 		
 		float minT = Float.MAX_VALUE;
 		float maxT = Float.MIN_VALUE;
@@ -190,8 +159,9 @@ public class GraphDrawer extends PApplet
 		float conv = (values.height-2)/tRange;
 		 
 		values.beginDraw();
-		values.background(0, 0, 0);
-		values.stroke(255);
+		values.clear();
+		values.stroke(255, 0, 0);
+		values.strokeWeight(3);
 		float wStart = 0;
 		for(int i = 0; i < hours.size()-2; i++)
 		{

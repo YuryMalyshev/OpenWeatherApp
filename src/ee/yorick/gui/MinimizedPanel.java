@@ -8,6 +8,10 @@ import java.awt.Toolkit;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import ee.yorick.AppWindow;
+import ee.yorick.logic.WeatherUpdateThread;
+
 import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
@@ -76,15 +80,15 @@ public class MinimizedPanel extends JPanel
 		{
 			if (t > 0)
 			{
-				lblTemp.setText("+" + t);
+				lblTemp.setText("+" + t+AppWindow.degC);
 			}
 			else if (t < 0)
 			{
-				lblTemp.setText("-" + t);
+				lblTemp.setText("-" + t+AppWindow.degC);
 			}
 			else
 			{
-				lblTemp.setText("" + t);
+				lblTemp.setText("" + t+AppWindow.degC);
 			}
 		}
 	}

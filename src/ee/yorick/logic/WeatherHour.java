@@ -1,4 +1,4 @@
-package ee.yorick.gui;
+package ee.yorick.logic;
 
 import java.time.LocalDateTime;
 

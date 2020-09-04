@@ -1,4 +1,4 @@
-package ee.yorick.gui;
+package ee.yorick;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -8,6 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import ee.yorick.gui.MaximizedPanel;
+import ee.yorick.gui.MinimizedPanel;
+import ee.yorick.logic.WeatherDay;
+import ee.yorick.logic.WeatherHour;
+import ee.yorick.logic.WeatherUpdateThread;
+
 import java.awt.Image;
 
 import java.awt.BorderLayout;
@@ -32,7 +39,6 @@ public class AppWindow extends JFrame
 	private JPanel weatherPanel;
 	private JPanel extendPanel;
 	
-
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
@@ -55,9 +61,6 @@ public class AppWindow extends JFrame
 	boolean isMin = true;
 	private JLabel lblTime;
 	
-	/**
-	 * Create the frame.
-	 */
 	public AppWindow()
 	{
 		this.setTitle("Weather App");
@@ -112,8 +115,6 @@ public class AppWindow extends JFrame
 		btnInfo.setFocusable(false);
 		timePanel.add(btnInfo, BorderLayout.WEST);
 		
-		
-		
 		weatherPanel = new JPanel();
 		weatherPanel.setOpaque(false);
 		contentPane.add(weatherPanel);
@@ -122,18 +123,7 @@ public class AppWindow extends JFrame
 		minp = new MinimizedPanel(wut);
 		weatherPanel.add(minp);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		maxp = new MaximizedPanel();
-		//weatherPanel.add(maxp, "max");
 
 		extendPanel = new JPanel();
 		extendPanel.setOpaque(false);
@@ -143,22 +133,6 @@ public class AppWindow extends JFrame
 		fl_extendPanel.setHgap(0);
 		contentPane.add(extendPanel, BorderLayout.SOUTH);
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		JButton btnExtend = new JButton("\u2198");
 		btnExtend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
@@ -226,5 +200,4 @@ public class AppWindow extends JFrame
 	{
 		maxp.updateHourlyWeather(hours);
 	}
-
 }

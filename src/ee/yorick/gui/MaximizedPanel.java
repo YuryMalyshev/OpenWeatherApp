@@ -2,6 +2,8 @@ package ee.yorick.gui;
 
 import javax.swing.JPanel;
 
+import ee.yorick.logic.WeatherDay;
+import ee.yorick.logic.WeatherHour;
 import processing.core.PApplet;
 
 import java.awt.Dimension;
@@ -20,8 +22,8 @@ public class MaximizedPanel extends JPanel
 	public MaximizedPanel()
 	{
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) (d.height/1.5f);
-		int height = d.height/3;
+		int width = (int) (d.height/1.4f);
+		int height = (int) (d.height/2.75);
 		int swWidth = width/7;
 		int swHeight = swWidth+swWidth/3;
 		setPreferredSize(new Dimension(width, height));

@@ -1,4 +1,4 @@
-package ee.yorick.gui;
+package ee.yorick;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;

@@ -13,6 +13,9 @@ import java.net.URL;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
+
+import ee.yorick.AppWindow;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
